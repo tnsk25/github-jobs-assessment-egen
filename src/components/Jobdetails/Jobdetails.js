@@ -1,8 +1,10 @@
 import React from 'react';
 import './Jobdetails.css';
-import { MDBBtn, MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText } from 'mdbreact';
+import {MDBCard, MDBCardBody, MDBCardImage, MDBCardText } from 'mdbreact';
 
 const Jobdetails = (props) => {
+
+	const date_conv = new Date(props.content.created_at).toDateString();
 
 	return (
 		
@@ -10,15 +12,15 @@ const Jobdetails = (props) => {
 	        <MDBCardImage className="img-fluid company-logo" alt={props.content.company} src={props.content.company_logo} waves />
 	        <MDBCardBody>
 	          <MDBCardText>
-	            <span>{props.content.created_at} . {props.content.type}</span>
+	            <span>{date_conv} . {props.content.type}</span>
 	          </MDBCardText>	
-	          <MDBCardTitle>{props.content.title}</MDBCardTitle>
+	          <MDBCardText><b>{props.content.title}</b></MDBCardText>
 	          <MDBCardText>
 	            <span>{props.content.company}</span>
 	            <br/>
 	            <span>{props.content.location}</span>
 	          </MDBCardText>
-	          <MDBBtn href="#">Read More</MDBBtn>
+	         <button className="btn">Read More</button>
 	        </MDBCardBody>
 	      </MDBCard>
 

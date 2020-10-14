@@ -31,7 +31,7 @@ const Jobfilter = (props) => {
 					</div>
 
 					<div className="button-submit">
-		    			<button type="submit" className="btn btn-primary">Search</button>
+		    			<button type="submit" className="btn">Search</button>
 		    		</div>
 
 		    	</div>

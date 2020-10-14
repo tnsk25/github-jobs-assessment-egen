@@ -1,8 +1,10 @@
 import React, { Component, Fragment } from 'react';
+import {Route, Switch } from 'react-router-dom';
 import './App.css';
 import Header from '../components/Header/Header';
 import Jobfilter from '../components/Jobfilter/Jobfilter';
 import Jobdetails from '../components/Jobdetails/Jobdetails';
+import Jobspecifications from '../components/Jobspecifications/Jobspecifications';
 import {MDBContainer} from "mdbreact";
 import axios from 'axios';
 
@@ -16,6 +18,7 @@ class App extends Component {
   {
     super(props);
     this.state = {
+      theme: 'light',
       jobs: [],
       params: 
       { 
@@ -27,28 +30,34 @@ class App extends Component {
   componentDidMount = () => {
     let currentComponent = this;
     navigator.geolocation.watchPosition(function(position) {
-      axios.get(APISettings.baseUrl, { 
+      
+      if(currentComponent.state.jobs.length===0)
+      {
+
+        axios.get(APISettings.baseUrl, { 
           params: { 
             lat: position.coords.latitude,
             long: position.coords.longitude
           } 
         }).then( (response) =>{
-          if(response.data.length)
-          {
-            currentComponent.setState({ jobs: response.data });
-          }
-          else
-          {
-            axios.get(APISettings.baseUrl).then( (jobresponse) =>{
+        if(response.data.length)
+        {
+          currentComponent.setState({ jobs: response.data });
+        }
+        else
+        {
+          axios.get(APISettings.baseUrl).then( (jobresponse) =>{
 
-              currentComponent.setState({
-                jobs: jobresponse.data
-              });
+            currentComponent.setState({
+              jobs: jobresponse.data
+            });
 
-            }); 
-          }
+          }); 
+        }
         });
 
+      }
+      
     },
     function(error) {
       if (error.code === error.PERMISSION_DENIED)
@@ -62,6 +71,15 @@ class App extends Component {
         });
       }
     });
+
+  }
+
+  toggleTheme = (event) => {
+    let themeBool = event.target.checked;
+    if(themeBool)
+      this.setState({theme:'dark'});
+    else
+      this.setState({theme:'light'});
 
   }
 
@@ -86,12 +104,12 @@ class App extends Component {
 
   loadPage = (mode) => {
 
-    let page_num = mode==='next' ? this.state.params.page+1 : this.state.params.page-1
+    let page_num = mode==='next' ? this.state.params.page+1 : this.state.params.page-1;
 
     this.setState({
       params : {
         ...this.state.params,
-        ['page']: page_num 
+        'page': page_num 
       }
     }, () => {
       axios.get(APISettings.baseUrl, { 
@@ -110,55 +128,70 @@ class App extends Component {
     return (
       <MDBContainer>
         <Fragment>
-          <div className="App">
-            
-            <Header/>
-            <Jobfilter search={this.handleSearch}/>
-            
-            <div className="row">
-            
-            {this.state.jobs.length ?
+          <div className="App" id={this.state.theme} >
+            <Header toggle={this.toggleTheme} />
+            <Switch>
+                <Route path='/job/id'>
+                  <Jobspecifications />
+                </Route>
+                <Route path="/">
+                  <Jobfilter search={this.handleSearch}/>
+                  
+                  <div className="row jobs-row">
+                  
+                  {this.state.jobs.length ?
 
-            <Fragment>
-              
-            {
-              this.state.jobs.map( (job,index) => {
+                  <Fragment>
+                    
+                  {
+                    this.state.jobs.map( (job,index) => {
 
-                return(
-                  <div key={index} className="col-md-4 col-lg-4 col-sm-6 col-xs-12">
-                    <Jobdetails 
-                      key={index}
-                      content = {job}
-                    />
+                      return(
+                        <div key={index} className="col-md-4 col-lg-4 col-sm-6 col-xs-12 jobs-col">
+                          <Jobdetails 
+                            key={index}
+                            content = {job}
+                          />
+                        </div>
+                      );
+
+                    })  
+                  } 
+                  </Fragment>
+                  :
+                  <div className="no-jobs">
+                    <h4>
+                      <b>No jobs found</b>
+                    </h4>
                   </div>
-                );
+                  }
 
-              })  
-            } 
-            </Fragment>
-            :
-            null
-            }
+                  </div>
+                  <div className="pagination-options">  
 
-            </div>
-          </div>
+                    {
+                      this.state.params.page > 1
+                      ?
+                      <button className="btn" onClick={this.loadPage.bind(this,'prev')}>Prev</button>
+                      :
+                      null
+                    }
 
-          {
-           this.state.jobs.length ===50
-           ?
-           <a onClick={this.loadPage.bind(this,'next')}>Next</a>
-           :
-           null 
-          }
+                    {
+                     this.state.jobs.length ===50
+                     ?
+                     <button className="btn" onClick={this.loadPage.bind(this,'next')}>Next</button>
+                     :
+                     null 
+                    }
 
-          {
-            this.state.params.page > 1
-            ?
-            <a onClick={this.loadPage.bind(this,'prev')}>Prev</a>
-            :
-            null
-          }
+                  </div>
 
+              </Route>
+
+            </Switch>
+
+        </div>
         </Fragment>
       </MDBContainer>
     );

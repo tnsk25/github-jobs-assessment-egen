@@ -15,7 +15,7 @@ const Header = (props) => {
               <MDBFormInline waves>
           		<MDBIcon className="theme-icon" icon="sun" />
 			    <div className='custom-control custom-switch theme-switch'>
-			        <input type='checkbox' className='custom-control-input' id='thememode' readOnly />
+			        <input type='checkbox' className='custom-control-input' id='thememode' name="theme" onChange={props.toggle}/>
 			        <label className='custom-control-label' htmlFor='thememode'></label>
 			    </div>
 			    <MDBIcon className="theme-icon" icon="moon" />

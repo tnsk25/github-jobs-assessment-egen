@@ -32,3 +32,51 @@
     transform: rotate(360deg);
   }
 }
+
+.jobs-row
+{
+  padding:0px 25px;
+}
+.jobs-col
+{
+  margin-bottom: 30px;
+}
+.navbar
+{
+ background: #5865E0; 
+}
+
+.btn
+{
+  background-color: #5865E0 !important;
+  color: #ffffff !important;
+  font-weight: bold !important;
+}
+.pagination-options
+{
+  text-align: center;
+  margin: 0 auto;
+  padding-bottom: 20px;
+}
+.no-jobs
+{
+  text-align: center;
+  margin: 0 auto;
+}
+#light
+{
+  background: #F5F6F8;
+}
+#dark
+{
+  background: #131822;
+}
+
+#dark .card
+{
+  background-color: #19212D;
+}
+#dark *
+{
+  color: #ffffff !important;
+}
