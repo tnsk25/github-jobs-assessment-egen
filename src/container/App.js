@@ -3,10 +3,12 @@ import './App.css';
 import Header from '../components/Header/Header';
 import Jobfilter from '../components/Jobfilter/Jobfilter';
 import Jobdetails from '../components/Jobdetails/Jobdetails';
-import Joblisting from '../Api';
 import {MDBContainer} from "mdbreact";
-const joblisting = new Joblisting();
+import axios from 'axios';
 
+const APISettings = {
+    baseUrl: 'http://localhost:8080/https://jobs.github.com/positions.json'
+}
 
 class App extends Component {
 
@@ -19,18 +21,43 @@ class App extends Component {
   }
   
   componentDidMount = () => {
-    
-    joblisting.getJobs().then( (response) =>{
 
-      this.setState({
-        jobs: response.data
-      });
 
-      console.log(this.state.jobs)
+    // if (navigator.geolocation) 
+    // {
+        
+    //     navigator.geolocation.getCurrentPosition( (position) => {
+    //       console.log("in nav");  
+    //       axios.get(APISettings.baseUrl, { 
+    //         params: { 
+    //           lat: position.coords.latitude,
+    //           long: position.coords.longitude
+    //         } 
+    //       }).then( (response) =>{
 
-    });
+    //         this.setState({
+    //           jobs: response.data
+    //         });
 
-    
+    //         console.log(this.state.jobs)
+
+    //       });
+
+    //     });
+    // }
+    // else
+    // {
+    //   console.log("in else");
+      axios.get(APISettings.baseUrl).then( (response) =>{
+
+            this.setState({
+              jobs: response.data
+            });
+
+            console.log(this.state.jobs)
+
+          });
+    // }
 
   }
 
