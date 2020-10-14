@@ -9,7 +9,7 @@ import {MDBContainer} from "mdbreact";
 import axios from 'axios';
 
 const APISettings = {
-    baseUrl: 'http://localhost:8080/https://jobs.github.com/positions.json'
+    baseUrl: 'http://0.0.0.0:8080/https://jobs.github.com/positions.json'
 }
 
 class App extends Component {

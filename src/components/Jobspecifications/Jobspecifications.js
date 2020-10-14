@@ -4,7 +4,7 @@ import axios from 'axios';
 import {MDBCard, MDBCardBody, MDBCardImage, MDBCardText } from 'mdbreact';
 
 const APISettings = {
-    baseUrl: 'http://localhost:8080/https://jobs.github.com/positions/'
+    baseUrl: 'http://0.0.0.0:8080/https://jobs.github.com/positions/'
 }
 
 class Jobspecifications extends Component {

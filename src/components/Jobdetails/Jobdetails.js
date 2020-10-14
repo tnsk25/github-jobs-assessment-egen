@@ -22,7 +22,7 @@ const Jobdetails = (props) => {
 	            <br/>
 	            <span>{props.content.location}</span>
 	          </MDBCardText>
-	         <a target="_BLANK" href={job_url} className="btn">Read More</a>
+	         <a target="_BLANK" rel="noopener noreferrer" href={job_url} className="btn">Read More</a>
 	        </MDBCardBody>
 	      </MDBCard>
 
