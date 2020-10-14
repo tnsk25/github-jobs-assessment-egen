@@ -16,64 +16,55 @@ class App extends Component {
   {
     super(props);
     this.state = {
-      jobs: []
+      jobs: [],
+      params: { }
     };
   }
   
   componentDidMount = () => {
+    let currentComponent = this;
+    navigator.geolocation.watchPosition(function(position) {
+      
+      axios.get(APISettings.baseUrl, { 
+          params: { 
+            lat: position.coords.latitude,
+            long: position.coords.longitude
+          } 
+        }).then( (response) =>{
+          if(response.data.length)
+          {
+            currentComponent.setState({ jobs: response.data });
+          }
+          else
+          {
+            axios.get(APISettings.baseUrl).then( (jobresponse) =>{
 
+              currentComponent.setState({
+                jobs: jobresponse.data
+              });
 
-    // if (navigator.geolocation) 
-    // {
-        
-    //     navigator.geolocation.getCurrentPosition( (position) => {
-    //       console.log("in nav");  
-    //       axios.get(APISettings.baseUrl, { 
-    //         params: { 
-    //           lat: position.coords.latitude,
-    //           long: position.coords.longitude
-    //         } 
-    //       }).then( (response) =>{
+            }); 
+          }
+        });
 
-    //         this.setState({
-    //           jobs: response.data
-    //         });
+    },
+    function(error) {
+      if (error.code === error.PERMISSION_DENIED)
+      {
+        axios.get(APISettings.baseUrl).then( (response) =>{
 
-    //         console.log(this.state.jobs)
-
-    //       });
-
-    //     });
-    // }
-    // else
-    // {
-    //   console.log("in else");
-      axios.get(APISettings.baseUrl).then( (response) =>{
-
-            this.setState({
-              jobs: response.data
-            });
-
-            console.log(this.state.jobs)
-
+          currentComponent.setState({
+            jobs: response.data
           });
-    // }
 
-  }
+        });
+      }
+    });
 
-  componentDidUpdate = () => {
-    console.log("Component Updated");
-  }
-
-  shouldComponentUpdate = () => {
-   console.log("Should Component Update!!"); 
-   return true;
   }
 
   render() {
     
-    console.log("Component rendered");
-
     return (
       <MDBContainer>
         <Fragment>
