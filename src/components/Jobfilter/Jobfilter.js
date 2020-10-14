@@ -5,19 +5,19 @@ const Jobfilter = (props) => {
 
 	return (
 
-		<form className="filterform">
+		<form className="filterform" onSubmit={props.search}>
 		  <div className="row">
 		    <div className="col-md-4 col-lg-4 col-sm-12 col-xs-12">
 		      <div className="md-form mt-0">
 			    <i className="filter-icon fas fa-search prefix"></i>
-		        <input type="text" className="form-control" id="details" placeholder="Title, company, skill.."/>
+		        <input type="text" name="description" className="form-control" id="details" placeholder="Title, company, skill.."/>
 		      </div>
 		    </div>
 
 		    <div className="col-md-4 col-lg-4 col-sm-12 col-xs-12">
 		      <div className="md-form mt-0">
 		      	<i className="filter-icon fas fa-map-marker-alt prefix"></i>
-		        <input type="text" className="form-control" id="location" placeholder="Location.."/>
+		        <input type="text" name="location" className="form-control" id="location" placeholder="Location.."/>
 		      </div>
 		    </div>
 
@@ -26,7 +26,7 @@ const Jobfilter = (props) => {
 		    	<div className="d-flex justify-content-around">
 
 		    		<div className="custom-control custom-checkbox fulltime-checkbox">
-						<input type="checkbox" className="custom-control-input" id="defaultUnchecked"/>
+						<input type="checkbox" name="full_time" className="custom-control-input" id="defaultUnchecked" />
 						<label className="custom-control-label" htmlFor="defaultUnchecked"><b>Full Time Only</b></label>				    
 					</div>
 

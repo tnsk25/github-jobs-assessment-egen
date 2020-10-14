@@ -17,14 +17,16 @@ class App extends Component {
     super(props);
     this.state = {
       jobs: [],
-      params: { }
+      params: 
+      { 
+        page: 1
+      }
     };
   }
   
   componentDidMount = () => {
     let currentComponent = this;
     navigator.geolocation.watchPosition(function(position) {
-      
       axios.get(APISettings.baseUrl, { 
           params: { 
             lat: position.coords.latitude,
@@ -63,6 +65,46 @@ class App extends Component {
 
   }
 
+  handleSearch = (event) => {
+      event.preventDefault();
+      this.setState({
+      params: {...this.state.params,
+      [event.target.location.name]: event.target.location.value,
+      [event.target.description.name]: event.target.description.value,
+      [event.target.full_time.name]: event.target.full_time.checked
+      }
+      }, () => {
+      axios.get(APISettings.baseUrl, { 
+          params: {
+            markdown: true, 
+            ...this.state.params} 
+        }).then( (response) =>{
+            this.setState({ jobs: response.data });
+        });
+      });
+  }
+
+  loadPage = (mode) => {
+
+    let page_num = mode==='next' ? this.state.params.page+1 : this.state.params.page-1
+
+    this.setState({
+      params : {
+        ...this.state.params,
+        ['page']: page_num 
+      }
+    }, () => {
+      axios.get(APISettings.baseUrl, { 
+          params: {
+            markdown: true, 
+            ...this.state.params} 
+        }).then( (response) =>{
+            this.setState({ jobs: response.data });
+        });
+      });
+
+  }
+
   render() {
     
     return (
@@ -71,7 +113,7 @@ class App extends Component {
           <div className="App">
             
             <Header/>
-            <Jobfilter/>
+            <Jobfilter search={this.handleSearch}/>
             
             <div className="row">
             
@@ -100,6 +142,23 @@ class App extends Component {
 
             </div>
           </div>
+
+          {
+           this.state.jobs.length ===50
+           ?
+           <a onClick={this.loadPage.bind(this,'next')}>Next</a>
+           :
+           null 
+          }
+
+          {
+            this.state.params.page > 1
+            ?
+            <a onClick={this.loadPage.bind(this,'prev')}>Prev</a>
+            :
+            null
+          }
+
         </Fragment>
       </MDBContainer>
     );
