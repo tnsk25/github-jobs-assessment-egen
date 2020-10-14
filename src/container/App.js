@@ -14,6 +14,8 @@ const APISettings = {
 
 class App extends Component {
 
+  // initial state is set
+  
   constructor(props)
   {
     super(props);
@@ -28,6 +30,9 @@ class App extends Component {
   }
   
   componentDidMount = () => {
+
+    // Function to get jobs based on the current geocoordinates. If user denies access latest 50 jobs are fecthed.
+
     let currentComponent = this;
     navigator.geolocation.watchPosition(function(position) {
       
@@ -74,6 +79,8 @@ class App extends Component {
 
   }
 
+  // function to change theme (light/dark modes)
+
   toggleTheme = (event) => {
     let themeBool = event.target.checked;
     if(themeBool)
@@ -82,6 +89,8 @@ class App extends Component {
       this.setState({theme:'light'});
 
   }
+
+  // function to filter job results based on search input values
 
   handleSearch = (event) => {
       event.preventDefault();
@@ -101,6 +110,8 @@ class App extends Component {
         });
       });
   }
+
+  // initially last 50 jobs are fecthed. This function is used to fetch the next/prev 50 jobs if exist
 
   loadPage = (mode) => {
 
@@ -131,9 +142,7 @@ class App extends Component {
           <div className="App" id={this.state.theme} >
             <Header toggle={this.toggleTheme} />
             <Switch>
-                <Route path='/job/id'>
-                  <Jobspecifications />
-                </Route>
+                <Route path='/job/:id' component={Jobspecifications} />
                 <Route path="/">
                   <Jobfilter search={this.handleSearch}/>
                   

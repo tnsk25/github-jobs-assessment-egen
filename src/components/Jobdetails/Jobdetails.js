@@ -4,7 +4,9 @@ import {MDBCard, MDBCardBody, MDBCardImage, MDBCardText } from 'mdbreact';
 
 const Jobdetails = (props) => {
 
+	// UTC date format is converted to local date/time
 	const date_conv = new Date(props.content.created_at).toDateString();
+	const job_url = '/job/'+props.content.id;
 
 	return (
 		
@@ -20,7 +22,7 @@ const Jobdetails = (props) => {
 	            <br/>
 	            <span>{props.content.location}</span>
 	          </MDBCardText>
-	         <button className="btn">Read More</button>
+	         <a target="_BLANK" href={job_url} className="btn">Read More</a>
 	        </MDBCardBody>
 	      </MDBCard>
 
